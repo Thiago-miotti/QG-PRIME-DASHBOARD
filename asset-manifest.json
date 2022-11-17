@@ -1,0 +1,12 @@
+{
+  "files": {
+    "main.js": "/qg-prime-dashboard/static/js/main.2c9df238.js",
+    "static/js/496.32f6fd7b.chunk.js": "/qg-prime-dashboard/static/js/496.32f6fd7b.chunk.js",
+    "index.html": "/qg-prime-dashboard/index.html",
+    "main.2c9df238.js.map": "/qg-prime-dashboard/static/js/main.2c9df238.js.map",
+    "496.32f6fd7b.chunk.js.map": "/qg-prime-dashboard/static/js/496.32f6fd7b.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.2c9df238.js"
+  ]
+}
