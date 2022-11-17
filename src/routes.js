@@ -9,6 +9,8 @@ import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
 import DashboardAppPage from './pages/DashboardAppPage';
 
+import {ProtectedRoute} from './components/protected-route';
+
 // ----------------------------------------------------------------------
 
 export default function Router() {
@@ -18,13 +20,13 @@ export default function Router() {
       element: <DashboardLayout />,
       children: [
         { element: <Navigate to="/dashboard/app" />, index: true },
-        { path: 'app', element: <DashboardAppPage /> },
+        { path: 'app', element: (<ProtectedRoute><DashboardAppPage /></ProtectedRoute> ) },
         { path: 'user', element: <AttractionPage /> },
         { path: 'blog', element: <BlogPage /> },
       ],
     },
     {
-      path: 'login',
+      path: '/login',
       element: <LoginPage />,
     },
     {

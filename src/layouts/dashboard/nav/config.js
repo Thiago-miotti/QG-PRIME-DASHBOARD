@@ -1,5 +1,5 @@
 // component
-import { MdAttractions } from 'react-icons/md';
+// import { MdAttractions } from 'react-icons/md';
 import SvgColor from '../../../components/svg-color';
 
 // ----------------------------------------------------------------------
@@ -13,9 +13,9 @@ const navConfig = [
     icon: icon('ic_analytics'),
   },
   {
-    title: 'Atrações',
+    title: 'Usuários',
     path: '/dashboard/user',
-    icon: <MdAttractions style={{width:'100%', height:'100%'}}/>,
+    icon: icon('ic_user'),
   },
   // {
   //   title: 'product',
@@ -27,11 +27,11 @@ const navConfig = [
   //   path: '/dashboard/blog',
   //   icon: icon('ic_blog'),
   // },
-  {
-    title: 'login',
-    path: '/login',
-    icon: icon('ic_lock'),
-  },
+  // {
+  //   title: 'login',
+  //   path: '/login',
+  //   icon: icon('ic_lock'),
+  // },
   // {
   //   title: 'Not found',
   //   path: '/404',

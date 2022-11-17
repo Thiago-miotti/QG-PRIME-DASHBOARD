@@ -45,7 +45,7 @@ export default function LoginPage() {
   return (
     <>
       <Helmet>
-        <title> Login | Minimal UI </title>
+        <title> Login </title>
       </Helmet>
 
       <StyledRoot>
@@ -69,7 +69,7 @@ export default function LoginPage() {
         <Container maxWidth="sm">
           <StyledContent>
             <Typography variant="h4" gutterBottom sx={{mb: 3}}>
-              Entrar para a plataforma
+              Faça login para continuar
             </Typography>
 
             {/* <Stack direction="row" spacing={2}>
