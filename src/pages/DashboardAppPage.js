@@ -81,7 +81,7 @@ export default function DashboardAppPage() {
                 id: faker.datatype.uuid(),
                 title: faker.name.fullName(),
                 description: 'Fez check-in na atração Claw Machine',
-                image: `/assets/images/avatars/avatar_${index + 3}.jpg`,
+                image: `/qg-prime-dashboard/assets/images/avatars/avatar_${index + 3}.jpg`,
                 postedAt: faker.date.recent(),
               }))}
             />

@@ -22,7 +22,7 @@ export default function Page404() {
   return (
     <>
       <Helmet>
-        <title> 404 Page Not Found | Minimal UI </title>
+        <title> 404 Page Not Found</title>
       </Helmet>
 
       <Container>
@@ -38,7 +38,7 @@ export default function Page404() {
 
           <Box
             component="img"
-            src="/assets/illustrations/illustration_404.svg"
+            src="/qg-prime-dashboard/assets/illustrations/illustration_404.svg"
             sx={{ height: 260, mx: 'auto', my: { xs: 5, sm: 10 } }}
           />
 

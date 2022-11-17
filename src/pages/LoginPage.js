@@ -62,7 +62,7 @@ export default function LoginPage() {
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
               Olá, Bem-vindo!
             </Typography>
-            <img src="/assets/illustrations/illustration_login.png" alt="login" />
+            <img src="/qg-prime-dashboard/assets/illustrations/illustration_login.png" alt="login" />
           </StyledSection>
         )}
 
