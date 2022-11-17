@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.js": "/qg-prime-dashboard/static/js/main.db180f3f.js",
+    "main.js": "/qg-prime-dashboard/static/js/main.328be3d6.js",
     "static/js/496.32f6fd7b.chunk.js": "/qg-prime-dashboard/static/js/496.32f6fd7b.chunk.js",
     "index.html": "/qg-prime-dashboard/index.html",
-    "main.db180f3f.js.map": "/qg-prime-dashboard/static/js/main.db180f3f.js.map",
+    "main.328be3d6.js.map": "/qg-prime-dashboard/static/js/main.328be3d6.js.map",
     "496.32f6fd7b.chunk.js.map": "/qg-prime-dashboard/static/js/496.32f6fd7b.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.db180f3f.js"
+    "static/js/main.328be3d6.js"
   ]
 }
