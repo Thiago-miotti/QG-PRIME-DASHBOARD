@@ -28,13 +28,6 @@ export default function AppNewsUpdate({ title, subheader, list, ...other }) {
         </Stack>
       </Scrollbar>
 
-      <Divider />
-
-      <Box sx={{ p: 2, textAlign: 'right' }}>
-        <Button size="small" color="inherit" endIcon={<Iconify icon={'eva:arrow-ios-forward-fill'} />}>
-          View all
-        </Button>
-      </Box>
     </Card>
   );
 }
