@@ -90,7 +90,7 @@ export default function DashboardAppPage() {
                             title="Visitas as atrações"
                             chartData={mappedResults.map(res => {
                                 return {
-                                    label: res.activationStandId === 1 ? "Claw Machine" : res.activationStandId === 2 ? "Tabuleiro" : "Photo Freeze",
+                                    label: res.activationStandId === 3 ? "Claw Machine" : res.activationStandId === 2 ? "Tabuleiro" : "Photo Freeze",
                                     value: res.occurrence
                                 }
                             })}
@@ -107,7 +107,7 @@ export default function DashboardAppPage() {
                             title="Visitas as atrações"
                             chartData={mappedResults.map(res => {
                                 return {
-                                    label: res.activationStandId === 1 ? "Claw Machine" : res.activationStandId === 2 ? "Tabuleiro" : "Photo Freeze",
+                                    label: res.activationStandId === 3 ? "Claw Machine" : res.activationStandId === 2 ? "Tabuleiro" : "Photo Freeze",
                                     value: res.occurrence
                                 }
                             })}
