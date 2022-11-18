@@ -1,95 +1,135 @@
-import { Helmet } from 'react-helmet-async';
-import { faker } from '@faker-js/faker';
+import {Helmet} from 'react-helmet-async';
+import {faker} from '@faker-js/faker';
 // @mui
-import { useTheme } from '@mui/material/styles';
-import { Grid, Container, Typography } from '@mui/material';
+import {useTheme} from '@mui/material/styles';
+import {Grid, Container, Typography, Stack, CircularProgress, Box} from '@mui/material';
 // components
+import {useEffect, useMemo, useState} from "react";
+import axios from "axios";
 import Iconify from '../components/iconify';
 // sections
 import {
-  AppTasks,
-  AppNewsUpdate,
-  AppOrderTimeline,
-  AppCurrentVisits,
-  AppWebsiteVisits,
-  AppTrafficBySite,
-  AppWidgetSummary,
-  AppCurrentSubject,
-  AppConversionRates,
+    AppTasks,
+    AppNewsUpdate,
+    AppOrderTimeline,
+    AppCurrentVisits,
+    AppWebsiteVisits,
+    AppTrafficBySite,
+    AppWidgetSummary,
+    AppCurrentSubject,
+    AppConversionRates,
 } from '../sections/@dashboard/app';
+import {countOccurrences} from "../utils/countOccurrences";
 
-// ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
-  const theme = useTheme();
+    const theme = useTheme();
 
-  return (
-    <>
-      <Helmet>
-        <title> Khipo Dashboard </title>
-      </Helmet>
+    const [userActivations, setUserActivations] = useState([]);
+    const [users, setUsers] = useState([]);
+    const [isUserActivationsRequestOnProgress, setIsUserActivationsRequestOnProgress] = useState(false);
+    const [isUsersRequestOnProgress, setIsUsersRequestOnProgress] = useState(false);
 
-      <Container maxWidth="xl">
-        <Typography variant="h4" sx={{ mb: 5 }}>
-          Olá, Bem-vindo !
-        </Typography>
+    useEffect(() => {
+        setIsUserActivationsRequestOnProgress(true);
+        axios.get('https://api-qg-prime.azurewebsites.net/api/api-fetch-all-activations').then(response => {
+            setUserActivations(response.data);
+            setIsUserActivationsRequestOnProgress(false);
+        }).finally(() => setIsUserActivationsRequestOnProgress(false))
 
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} md={4}>
-            <AppWidgetSummary title="Usuários" total={120} icon={'ant-design:user-outlined'} />
-          </Grid>
+        setIsUsersRequestOnProgress(true);
+        axios.get('https://api-qg-prime.azurewebsites.net/api/api-fetch-all-users').then(response => {
+            setUsers(response.data)
+            setIsUsersRequestOnProgress(false);
+        }).finally(() => setIsUsersRequestOnProgress(false));
+    }, [])
 
-          <Grid item xs={12} sm={6} md={4}>
-            <AppWidgetSummary title="Usuários que fizeram check-in" total={70} color="info" icon={'ant-design:check-circle-filled'} />
-          </Grid>
-
-          <Grid item xs={12} sm={6} md={4}>
-            <AppWidgetSummary title="Usuários que não fizeram check-in" total={50} color="warning" icon={'ant-design:fall-outlined'} />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={4}>
-            <AppCurrentVisits
-              title="Visitas as atrações"
-              chartData={[
-                { label: 'Claw Machine', value: 4344 },
-                { label: 'Tabuleiro', value: 5435 },
-                { label: 'Photo Freeze', value: 1443 },
-              ]}
-              chartColors={[
-                theme.palette.primary.main,
-                theme.palette.info.main,
-                theme.palette.warning.main,
-              ]}
-            />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={8}>
-            <AppConversionRates
-              title="Visitas as atrações"
-              chartData={[
-                { label: 'Claw Machine', value: 400 },
-                { label: 'Tabuleiro', value: 430 },
-                { label: 'Photo Freeze', value: 448 },
-              ]}
-            />
-          </Grid>
-
-          <Grid item xs={12} md={12} lg={12}>
-            <AppNewsUpdate
-              title="Updates"
-              list={[...Array(5)].map((_, index) => ({
-                id: faker.datatype.uuid(),
-                title: faker.name.fullName(),
-                description: 'Fez check-in na atração Claw Machine',
-                image: `/qg-prime-dashboard/assets/images/avatars/avatar_${index + 3}.jpg`,
-                postedAt: faker.date.recent(),
-              }))}
-            />
-          </Grid>
+    const mappedResults = useMemo(() => countOccurrences(userActivations, 'activationStandId'), [userActivations]);
 
 
-        </Grid>
-      </Container>
-    </>
-  );
+    return (
+        <>
+            <Helmet>
+                <title> Khipo Dashboard </title>
+            </Helmet>
+
+            <Container maxWidth="xl">
+                <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{mb: 5}}>
+                    <Typography variant="h4" >
+                        Olá, Bem-vindo !
+                    </Typography>
+
+                    {isUserActivationsRequestOnProgress && (
+                        <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                            <CircularProgress/>
+                        </Box>
+                    )}
+                </Stack>
+
+
+                <Grid container spacing={3}>
+                    <Grid item xs={12} sm={6} md={4}>
+                        <AppWidgetSummary title="Usuários" total={users.length} icon={'ant-design:user-outlined'}/>
+                    </Grid>
+
+                    <Grid item xs={12} sm={6} md={4}>
+                        <AppWidgetSummary title="Usuários que fizeram check-in"
+                                          total={users.filter(u => u.userActivations.length > 0).length} color="info"
+                                          icon={'ant-design:check-circle-filled'}/>
+                    </Grid>
+
+                    <Grid item xs={12} sm={6} md={4}>
+                        <AppWidgetSummary title="Usuários que não fizeram check-in"
+                                          total={users.filter(u => u.userActivations.length === 0).length}
+                                          color="warning"
+                                          icon={'ant-design:fall-outlined'}/>
+                    </Grid>
+
+                    <Grid item xs={12} md={6} lg={4}>
+                        <AppCurrentVisits
+                            title="Visitas as atrações"
+                            chartData={mappedResults.map(res => {
+                                return {
+                                    label: res.activationStandId === 1 ? "Claw Machine" : res.activationStandId === 2 ? "Tabuleiro" : "Photo Freeze",
+                                    value: res.occurrence
+                                }
+                            })}
+                            chartColors={[
+                                theme.palette.primary.main,
+                                theme.palette.info.main,
+                                theme.palette.warning.main,
+                            ]}
+                        />
+                    </Grid>
+
+                    <Grid item xs={12} md={6} lg={8}>
+                        <AppConversionRates
+                            title="Visitas as atrações"
+                            chartData={mappedResults.map(res => {
+                                return {
+                                    label: res.activationStandId === 1 ? "Claw Machine" : res.activationStandId === 2 ? "Tabuleiro" : "Photo Freeze",
+                                    value: res.occurrence
+                                }
+                            })}
+                        />
+                    </Grid>
+
+                    <Grid item xs={12} md={12} lg={12}>
+                        <AppNewsUpdate
+                            title="Updates"
+                            list={userActivations.slice(1).slice(-5).map((u, index) => ({
+                                id: u.id,
+                                title: `${u.user.name} ${u.user.lastname}`,
+                                description: `Fez check-in na atração ${u.activationStand.name}`,
+                                image: `/qg-prime-dashboard/assets/images/avatars/avatar_${index + 3}.jpg`,
+                                postedAt: u.createdAt,
+                            }))}
+                        />
+                    </Grid>
+
+
+                </Grid>
+            </Container>
+        </>
+    );
 }

@@ -23,7 +23,7 @@ import {
     Typography,
     IconButton,
     TableContainer,
-    TablePagination, Box, CircularProgress,
+    TablePagination, Box, CircularProgress, Chip,
 } from '@mui/material';
 // components
 import Label from '../components/label';
@@ -39,6 +39,7 @@ const TABLE_HEAD = [
     {id: 'name', label: 'Nome', alignRight: false},
     {id: 'email', label: 'Email', alignRight: false},
     {id: 'cellphone', label: 'Telefone', alignRight: false},
+    {id: 'userActivations', label: 'Ativações', alignRight: false},
 ];
 
 // ----------------------------------------------------------------------
@@ -88,7 +89,7 @@ export default function UserPage() {
         axios.get('https://api-qg-prime.azurewebsites.net/api/api-fetch-all-users').then(response => {
             setUsers(response.data)
             setIsUsersRequestOnProgress(false);
-        });
+        }).finally(() => setIsUsersRequestOnProgress(false));
     }, [])
 
     const handleCloseMenu = () => {
@@ -164,7 +165,7 @@ export default function UserPage() {
                                     />
                                     <TableBody>
                                         {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                                            const {id, name, email, lastname, cellphone} = row;
+                                            const {id, name, email, lastname, cellphone, userActivations} = row;
                                             const selectedUser = selected.indexOf(name) !== -1;
 
                                             const fullName = `${name} ${lastname}`;
@@ -183,6 +184,21 @@ export default function UserPage() {
                                                     <TableCell align="left">{email}</TableCell>
 
                                                     <TableCell align="left">{cellphone}</TableCell>
+
+                                                    <TableCell align="left">
+                                                        <Stack direction="row" alignItems="center" spacing={1}>
+                                                            {userActivations.map(ua => {
+                                                                const {name, id} = ua.activationStand;
+                                                                return (
+                                                                    <Chip key={id}
+                                                                          color={id === 1 ? "warning" : id === 2 ? "info" : "error"}
+                                                                          label={name}
+                                                                    />
+                                                                )
+                                                            })}
+                                                        </Stack>
+
+                                                    </TableCell>
 
                                                 </TableRow>
                                             );
