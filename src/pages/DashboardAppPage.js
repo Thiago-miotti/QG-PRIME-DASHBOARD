@@ -9,7 +9,7 @@ import axios from 'axios';
 // sections
 // eslint-disable-next-line import/no-unresolved
 import AppMostViewShows from 'src/sections/@dashboard/app/AppMostViewShows';
-import { AppCurrentVisits, AppWidgetSummary, AppConversionRates} from '../sections/@dashboard/app';
+import { AppCurrentVisits, AppWidgetSummary, AppConversionRates, AppNewsUpdate} from '../sections/@dashboard/app';
 import { countOccurrences } from '../utils/countOccurrences';
 
 export default function DashboardAppPage() {
@@ -113,12 +113,55 @@ export default function DashboardAppPage() {
             />
           </Grid>
 
-          <Grid item xs={12} md={12} lg={12}>
-            <AppMostViewShows
-            />
-          </Grid>
-        </Grid>
-      </Container>
-    </>
-  );
+                    <Grid item xs={12} md={6} lg={4}>
+                        <AppCurrentVisits
+                            title="Visitas as atrações"
+                            chartData={mappedResults.map(res => {
+                                return {
+                                    label: res.activationStandId === 3 ? "Claw Machine" : res.activationStandId === 2 ? "Tabuleiro" : "Photo Freeze",
+                                    value: res.occurrence
+                                }
+                            })}
+                            chartColors={[
+                                theme.palette.primary.main,
+                                theme.palette.info.main,
+                                theme.palette.warning.main,
+                            ]}
+                        />
+                    </Grid>
+
+                    <Grid item xs={12} md={6} lg={8}>
+                        <AppConversionRates
+                            title="Visitas as atrações"
+                            chartData={mappedResults.map(res => {
+                                return {
+                                    label: res.activationStandId === 3 ? "Claw Machine" : res.activationStandId === 2 ? "Tabuleiro" : "Photo Freeze",
+                                    value: res.occurrence
+                                }
+                            })}
+                        />
+                    </Grid>
+
+                    <Grid item xs={12} md={12} lg={12}>
+                        <AppNewsUpdate
+                            title="Updates"
+                            list={userActivations.slice(1).slice(-5).map((u, index) => ({
+                                id: u.id,
+                                title: `${u.user.name} ${u.user.lastname}`,
+                                description: `Fez check-in na atração ${u.activationStand.name}`,
+                                image: `/assets/images/avatars/avatar_${index + 3}.jpg`,
+                                postedAt: u.createdAt,
+                            }))}
+                        />
+                    </Grid>
+
+                    <Grid item xs={12} md={12} lg={12}>
+                      <AppMostViewShows/>
+                    </Grid>
+
+
+                </Grid>
+            </Container>
+        </>
+    );
 }
