@@ -121,7 +121,7 @@ export default function DashboardAppPage() {
                                 id: u.id,
                                 title: `${u.user.name} ${u.user.lastname}`,
                                 description: `Fez check-in na atração ${u.activationStand.name}`,
-                                image: `/qg-prime-dashboard/assets/images/avatars/avatar_${index + 3}.jpg`,
+                                image: `/assets/images/avatars/avatar_${index + 3}.jpg`,
                                 postedAt: u.createdAt,
                             }))}
                         />
