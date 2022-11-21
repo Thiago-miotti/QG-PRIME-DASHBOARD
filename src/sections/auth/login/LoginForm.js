@@ -15,7 +15,7 @@ export default function LoginForm() {
   const [passwordValue, setPasswordValue] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-  const superSecretPassword = 'Khipo@2022%'
+  const superSecretPassword = 'Amazon@2022%'
 
   const handleClick = () => {
       if(passwordValue === superSecretPassword){
