@@ -16,7 +16,7 @@ const Logo = forwardRef(({ disabledLink = false, sx, ...other }, ref) => {
     <Box
       component="img"
       src="/assets/phygitalLogo.png"
-      sx={{ width: 240, height: 130, cursor: 'pointer', ...sx }}
+      sx={{ width: 210, height: 110, cursor: 'pointer', ...sx }}
     />
   );
 

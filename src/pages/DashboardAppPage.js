@@ -86,7 +86,7 @@ export default function DashboardAppPage() {
                 <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{mb: 5}}>
                     <Typography variant="h4">Olá, Bem-vindo !</Typography>
 
-                    {isUserActivationsRequestOnProgress && (
+                    {(isUserActivationsRequestOnProgress || isUsersRequestOnProgress || isUserAnswersRequestOnProgress) && (
                         <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                             <CircularProgress/>
                         </Box>
