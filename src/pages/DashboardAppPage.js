@@ -2,7 +2,18 @@ import {Helmet} from 'react-helmet-async';
 import {faker} from '@faker-js/faker';
 // @mui
 import {useTheme} from '@mui/material/styles';
-import {Grid, Container, Typography, Stack, CircularProgress, Box} from '@mui/material';
+import {
+    Grid,
+    Container,
+    Typography,
+    Stack,
+    CircularProgress,
+    Box,
+    Select,
+    MenuItem,
+    FormControl,
+    InputLabel
+} from '@mui/material';
 // components
 import {useEffect, useMemo, useState} from 'react';
 import axios from 'axios';
@@ -15,12 +26,17 @@ import {countOccurrences} from '../utils/countOccurrences';
 export default function DashboardAppPage() {
     const theme = useTheme();
 
+    const apiUrl = 'https://api-qg-prime.azurewebsites.net/api';
+    // const apiUrl = 'http://localhost:7071/api';
+
     const [userActivations, setUserActivations] = useState([]);
     const [users, setUsers] = useState([]);
+    const [allUsers, setAllUsers] = useState([]);
     const [userAnswers, setUserAnswers] = useState([]);
     const [isUserActivationsRequestOnProgress, setIsUserActivationsRequestOnProgress] = useState(false);
     const [isUsersRequestOnProgress, setIsUsersRequestOnProgress] = useState(false);
     const [isUserAnswersRequestOnProgress, setIsUserAnswersRequestOnProgress] = useState(false);
+    const [dateFilter, setDateFilter] = useState('all');
 
     const attractionsNameMapped = {
         1: 'Photo Freeze',
@@ -32,7 +48,7 @@ export default function DashboardAppPage() {
     useEffect(() => {
         setIsUserActivationsRequestOnProgress(true);
         axios
-            .get('https://api-qg-prime.azurewebsites.net/api/api-fetch-all-activations')
+            .get(`${apiUrl}/api-fetch-all-activations?dateFilter=${dateFilter}`)
             .then((response) => {
                 setUserActivations(response.data);
             })
@@ -40,20 +56,21 @@ export default function DashboardAppPage() {
 
         setIsUsersRequestOnProgress(true);
         axios
-            .get('https://api-qg-prime.azurewebsites.net/api/api-fetch-all-users')
+            .get(`${apiUrl}/api-fetch-all-users?dateFilter=${dateFilter}`)
             .then((response) => {
                 setUsers(response.data);
+                if(dateFilter === 'all') setAllUsers(response.data);
             })
             .finally(() => setIsUsersRequestOnProgress(false));
 
         setIsUsersRequestOnProgress(true);
         axios
-            .get('https://api-qg-prime.azurewebsites.net/api/api-fetch-all-user-answers')
+            .get(`${apiUrl}/api-fetch-all-user-answers?dateFilter=${dateFilter}`)
             .then((response) => {
                 setUserAnswers(response.data);
             })
             .finally(() => setIsUserAnswersRequestOnProgress(false));
-    }, []);
+    }, [dateFilter]);
 
     const mappedResults = useMemo(() => countOccurrences(userActivations, 'activationStandId'), [userActivations]);
 
@@ -76,6 +93,17 @@ export default function DashboardAppPage() {
         return countOccurrences(mappedAnswers, 'description').map(a => ({label: a.description, value: a.occurrence}))
     }, [userAnswers])
 
+    const uniqueDates = useMemo(() => {
+        if(allUsers && allUsers.length){
+            return [...new Set(allUsers.map((user) =>{
+                    const userCreatedDate = new Date(user.createdAt);
+
+                    return `${userCreatedDate.getDate()}/${userCreatedDate.getMonth() + 1}/${userCreatedDate.getFullYear()}`
+                }
+            ))]
+        }
+    }, [allUsers])
+
     return (
         <>
             <Helmet>
@@ -83,7 +111,7 @@ export default function DashboardAppPage() {
             </Helmet>
 
             <Container maxWidth="xl">
-                <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{mb: 5}}>
+                <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{mb: 2}}>
                     <Typography variant="h4">Olá, Bem-vindo !</Typography>
 
                     {(isUserActivationsRequestOnProgress || isUsersRequestOnProgress || isUserAnswersRequestOnProgress) && (
@@ -91,7 +119,19 @@ export default function DashboardAppPage() {
                             <CircularProgress/>
                         </Box>
                     )}
+
+                    <FormControl sx={{mb: 3, width: '200px'}}>
+                        <InputLabel id="demo-simple-select-label">Data</InputLabel>
+                        <Select label="Data" value={dateFilter} onChange={(e) => setDateFilter(e.target.value)}>
+                            <MenuItem value={'all'}>Todos</MenuItem>
+                            {uniqueDates?.map(date => (
+                                <MenuItem value={date}>{date}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
                 </Stack>
+
+
 
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={6} md={4}>
