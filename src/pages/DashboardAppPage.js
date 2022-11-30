@@ -26,7 +26,7 @@ import {countOccurrences} from '../utils/countOccurrences';
 export default function DashboardAppPage() {
     const theme = useTheme();
 
-    const apiUrl = 'https://api-qg-prime.azurewebsites.net/api';
+    const apiUrl = 'https://api-qg-amazon.azurewebsites.net/api';
     // const apiUrl = 'http://localhost:7071/api';
 
     const [userActivations, setUserActivations] = useState([]);
